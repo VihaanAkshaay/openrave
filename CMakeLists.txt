@@ -2,6 +2,9 @@ cmake_minimum_required (VERSION 3.0)
 project(OpenRAVE)
 set( CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS TRUE )
 
+# Include necessary modules
+include(CheckFunctionExists)
+
 # Find necessary packages
 find_package(LibXml2 REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem thread)
