@@ -401,20 +401,24 @@ if (OPT_MSGPACK)
     if (NOT msgpack-cxx_FOUND)
         pkg_check_modules(msgpack msgpack)
         if (msgpack_FOUND)
-            add_library(openrave-msgpack SHARED
-                src/libopenrave/openravemsgpack.cpp
-            )
-            target_include_directories(openrave-msgpack INTERFACE ${msgpack_INCLUDE_DIRS})
-            target_link_libraries(openrave-msgpack INTERFACE ${msgpack_LIBRARIES})
+            if (NOT TARGET openrave-msgpack)
+                add_library(openrave-msgpack SHARED
+                    src/libopenrave/openravemsgpack.cpp
+                )
+                target_include_directories(openrave-msgpack INTERFACE ${msgpack_INCLUDE_DIRS})
+                target_link_libraries(openrave-msgpack INTERFACE ${msgpack_LIBRARIES})
+            endif()
         else()
             message(FATAL_ERROR "msgpack feature was requested but msgpack libraries could not be found.")
         endif()
     else()
         message(STATUS "msgpack-cxx ${msgpack-cxx_VERSION}")
-        add_library(openrave-msgpack SHARED
-            src/libopenrave/openravemsgpack.cpp
-        )
-        target_link_libraries(openrave-msgpack INTERFACE msgpack-cxx)
+        if (NOT TARGET openrave-msgpack)
+            add_library(openrave-msgpack SHARED
+                src/libopenrave/openravemsgpack.cpp
+            )
+            target_link_libraries(openrave-msgpack INTERFACE msgpack-cxx)
+        endif()
     endif()
 
     set(OPENRAVE_MSGPACK 1)
